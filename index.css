@@ -1,0 +1,18 @@
+/* CSS */
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+form {
+    width: 300px;
+}
+
+label,
+input[type="text"],
+input[type="submit"] {
+    display: block;
+}

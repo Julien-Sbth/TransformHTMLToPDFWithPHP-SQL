@@ -2,6 +2,7 @@
 <html>
 <head>
     <title>Formulaire</title>
+    <link rel="stylesheet" href="/index.css">
 </head>
 <body>
 <form action="traitement.php" method="post">
@@ -16,6 +17,21 @@
 
     <label for="pays">Pays :</label>
     <input type="text" id="pays" name="pays"><br><br>
+
+    <label for="adresse">Adresse :</label>
+    <input type="text" id="adresse" name="adresse"><br><br>
+
+    <label for="email">Email :</label>
+    <input type="text" id="email" name="email"><br><br>
+
+    <label for="competence">Compétence :</label>
+    <input type="text" id="competence" name="competence"><br><br>
+
+    <label for="experience">Experience :</label>
+    <textarea type="text" id="experience" name="experience" placeholder="Description"></textarea><br>
+
+    <label for="ville">Ville :</label>
+    <input type="text" id="ville" name="ville"><br><br>
 
     <input type="submit" value="Envoyer">
 </form>
