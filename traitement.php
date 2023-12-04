@@ -8,6 +8,10 @@ define('DB_USER','root');
 define('DB_PASS','root');
 define('DB_NAME','cv');
 
+function wrapText($text, $lineLength = 50) {
+    return wordwrap($text, $lineLength, "\n", true);
+}
+
 try {
     $dbh = new PDO("mysql:host=".DB_HOST.";dbname=".DB_NAME, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
 } catch (PDOException $e) {
@@ -21,8 +25,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $pays = $_POST["pays"];
     $adresse = $_POST["adresse"];
     $email = $_POST["email"];
-    $competence = $_POST["competence"];
-    $experience = $_POST["experience"];
+    $competence = wrapText($_POST["competence"], 50);
+    $experience = wrapText($_POST["experience"], 50);
+
     if (empty($prenom) || empty($nom) || empty($telephone) || empty($pays) || empty($adresse) || empty($email) || empty($competence) || empty($experience)) {
         echo "Veuillez remplir tous les champs du formulaire.";
     } else {
@@ -47,9 +52,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $html .= "<tr><td><strong>Compétence:</strong></td><td>$competence</td></tr>";
                 $html .= "<tr><td><strong>Expérience:</strong></td><td>$experience</td></tr>";
                 $html .= "</table></body></html>";
-
-
-
 
                 $dompdf->loadHtml($html);
 
