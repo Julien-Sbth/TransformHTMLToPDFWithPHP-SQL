@@ -4,11 +4,11 @@ To use this code, follow these steps:
 
 ## 1. Download Composer
 
-##  Click [Here](https://getcomposer.org/download/) for download Composer
+Click [Here](https://getcomposer.org/download/) for download Composer
 
 You'll need Composer for this project. Once downloaded and installed, open your terminal and run:
 
-## composer install
+ composer install
 
 there is a new folder "vendor", and is this folder that convert the html to pdf.
 
