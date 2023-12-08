@@ -42,7 +42,20 @@
         <label for="ville">Ville :</label>
         <input type="text" id="ville" name="ville" value="Ville">
     </div>
+    <p>Vous avez déjà envoyer un CV ?</p>
+    <div class="input-group">
+        <label for="verif_email">Adresse e-mail pour vérification :</label>
+        <input type="text" id="verif_email" name="verif_email" placeholder="Entrez votre adresse e-mail">
+    </div>
+    <div class="input-group">
+        <label for="verif_telephone">Numéro de téléphone pour vérification :</label>
+        <input type="text" id="verif_telephone" name="verif_telephone" placeholder="Entrez votre numéro de téléphone">
+    </div>
+
     <input type="submit" value="Envoyer">
 </form>
 </body>
 </html>
+<!-- l'utilisateur doit pouvoir revenir sur le pdf, récupérer l'ancien pdf et le modifier, afficher toutes les données
+
+ Partie Données personnelle, numero prenom adresse mail nom-->

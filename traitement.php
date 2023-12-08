@@ -28,48 +28,71 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $competence = wrapText($_POST["competence"], 50);
     $experience = wrapText($_POST["experience"], 50);
 
-    if (empty($prenom) || empty($nom) || empty($telephone) || empty($pays) || empty($adresse) || empty($email) || empty($competence) || empty($experience)) {
-        echo "Veuillez remplir tous les champs du formulaire.";
+    $verif_email = $_POST["verif_email"];
+    $verif_telephone = $_POST["verif_telephone"];
+
+    $verification = $dbh->prepare("SELECT * FROM informations WHERE Email = :verif_email AND Telephone = :verif_telephone");
+    $verification->bindParam(':verif_email', $verif_email);
+    $verification->bindParam(':verif_telephone', $verif_telephone);
+    $verification->execute();
+    $existing_data = $verification->fetch(PDO::FETCH_ASSOC);
+
+    if ($existing_data) {
+        echo "<p>Données existantes lié à cette utilisateur :</p>";
+        echo "<p>Prenom : " . $existing_data['Prenom'] . "</p>";
+        echo "<p>Nom : " . $existing_data['Nom'] . "</p>";
+        echo "<p>Pays : " . $existing_data['Pays'] . "</p>";
+        echo "<p>Email : " . $existing_data['Email'] . "</p>";
+        echo "<p>Adresse : " . $existing_data['Adresse'] . "</p>";
+        echo "<p>Téléphone : " . $existing_data['Telephone'] . "</p>";
+        echo "<p>Experience : " . $existing_data['Experience'] . "</p>";
+        echo "<p>Competence : " . $existing_data['Competence'] . "</p>";
+
+
     } else {
-        $requete = "INSERT INTO informations (Pays, Prenom, Nom, Telephone, Adresse, Email, Competence, Experience) VALUES ('$pays', '$prenom', '$nom', '$telephone', '$adresse', '$email', '$competence', '$experience' )";
+        if (empty($prenom) || empty($nom) || empty($telephone) || empty($pays) || empty($adresse) || empty($email) || empty($competence) || empty($experience)) {
+            echo "Veuillez remplir tous les champs du formulaire.";
+        } else {
+            $requete = "INSERT INTO informations (Pays, Prenom, Nom, Telephone, Adresse, Email, Competence, Experience) VALUES ('$pays', '$prenom', '$nom', '$telephone', '$adresse', '$email', '$competence', '$experience' )";
 
-        try {
-            $insertion = $dbh->query($requete);
+            try {
+                $insertion = $dbh->query($requete);
 
-            if ($insertion !== false) {
-                echo "Données insérées avec succès dans la base de données.";
+                if ($insertion !== false) {
+                    echo "Données insérées avec succès dans la base de données.";
 
-                echo "<p>Prénom : $prenom</p><p>Nom : $nom</p><p>Téléphone : $telephone</p><p>Pays : $pays</p><p>Adresse : $adresse</p><p>Email : $email</p><p>Compétence : $competence</p><p>Experience : $experience</p>";
+                    echo "<p>Prénom : $prenom</p><p>Nom : $nom</p><p>Téléphone : $telephone</p><p>Pays : $pays</p><p>Adresse : $adresse</p><p>Email : $email</p><p>Compétence : $competence</p><p>Experience : $experience</p>";
 
-                $dompdf = new Dompdf();
-                $html = "<html><body style='text-align: left;'><table border='1' style='margin: auto;'>";
-                $html .= "<tr><td><strong>Prénom:</strong></td><td>$prenom</td></tr>";
-                $html .= "<tr><td><strong>Nom:</strong></td><td>$nom</td></tr>";
-                $html .= "<tr><td><strong>Téléphone:</strong></td><td>$telephone</td></tr>";
-                $html .= "<tr><td><strong>Pays:</strong></td><td>$pays</td></tr>";
-                $html .= "<tr><td><strong>Adresse:</strong></td><td>$adresse</td></tr>";
-                $html .= "<tr><td><strong>Email:</strong></td><td>$email</td></tr>";
-                $html .= "<tr><td><strong>Compétence:</strong></td><td>$competence</td></tr>";
-                $html .= "<tr><td><strong>Expérience:</strong></td><td>$experience</td></tr>";
-                $html .= "</table></body></html>";
+                    $dompdf = new Dompdf();
+                    $html = "<html><body style='text-align: left;'><table border='1' style='margin: auto;'>";
+                    $html .= "<p> CV de : $prenom</p>";
+                    $html .= "<tr><td><strong>Prénom:</strong></td><td>$prenom</td></tr>";
+                    $html .= "<tr><td><strong>Nom:</strong></td><td>$nom</td></tr>";
+                    $html .= "<tr><td><strong>Téléphone:</strong></td><td>$telephone</td></tr>";
+                    $html .= "<tr><td><strong>Pays:</strong></td><td>$pays</td></tr>";
+                    $html .= "<tr><td><strong>Adresse:</strong></td><td>$adresse</td></tr>";
+                    $html .= "<tr><td><strong>Email:</strong></td><td>$email</td></tr>";
+                    $html .= "<tr><td><strong>Compétence:</strong></td><td>$competence</td></tr>";
+                    $html .= "<tr><td><strong>Expérience:</strong></td><td>$experience</td></tr>";
+                    $html .= "</table></body></html>";
 
-                $dompdf->loadHtml($html);
+                    $dompdf->loadHtml($html);
+                    $dompdf->render();
 
-                $dompdf->render();
+                    $output = $dompdf->output();
 
-                $output = $dompdf->output();
+                    header('Content-Type: application/pdf');
+                    header('Content-Disposition: attachment; filename="information.pdf"');
+                    echo $output;
+                } else {
+                    $errorInfo = $dbh->errorInfo();
+                    echo "Erreur lors de l'insertion : " . $requete . "<br>" . $errorInfo[2];
+                }
 
-                header('Content-Type: application/pdf');
-                header('Content-Disposition: attachment; filename="informations.pdf"');
-                echo $output;
-            } else {
-                $errorInfo = $dbh->errorInfo();
-                echo "Erreur lors de l'insertion : " . $requete . "<br>" . $errorInfo[2];
+                $dbh = null;
+            } catch (Exception $e) {
+                echo 'Exception capturée : ', $e->getMessage(), "\n";
             }
-
-            $dbh = null;
-        } catch (Exception $e) {
-            echo 'Exception capturée : ', $e->getMessage(), "\n";
         }
     }
 }
