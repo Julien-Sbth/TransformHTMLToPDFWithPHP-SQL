@@ -3,17 +3,17 @@ require_once __DIR__ . "/vendor/autoload.php";
 
 use Dompdf\Dompdf;
 
-define('DB_HOST','localhost');
-define('DB_USER','root');
-define('DB_PASS','root');
-define('DB_NAME','cv');
+define('DB_HOST', 'localhost');
+define('DB_USER', 'root');
+define('DB_PASS', 'root');
+define('DB_NAME', 'cv');
 
 function wrapText($text, $lineLength = 50) {
     return wordwrap($text, $lineLength, "\n", true);
 }
 
 try {
-    $dbh = new PDO("mysql:host=".DB_HOST.";dbname=".DB_NAME, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
+    $dbh = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME, DB_USER, DB_PASS, array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
 } catch (PDOException $e) {
     exit("Error: " . $e->getMessage());
 }
@@ -38,8 +38,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $existing_data = $verification->fetch(PDO::FETCH_ASSOC);
 
     if ($existing_data) {
-        echo "<p>Données existantes lié à cette utilisateur :</p>";
-        echo "<p>Prenom : " . $existing_data['Prenom'] . "</p>";
+        echo "<p>Données existantes liées à cet utilisateur :</p>";
+        echo "<p>Prénom : " . $existing_data['Prenom'] . "</p>";
         echo "<p>Nom : " . $existing_data['Nom'] . "</p>";
         echo "<p>Pays : " . $existing_data['Pays'] . "</p>";
         echo "<p>Email : " . $existing_data['Email'] . "</p>";
@@ -48,7 +48,50 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         echo "<p>Experience : " . $existing_data['Experience'] . "</p>";
         echo "<p>Competence : " . $existing_data['Competence'] . "</p>";
 
+        echo "<p>Souhaitez-vous modifier des données ? </p>";
+        echo "<form method='post'>";
+        echo "<input type='text' name='prenom' value='" . $existing_data['Prenom'] . "'><br>";
+        echo "<p><input type='text' id='nom' name='nom' value='nom'></p>";
+        echo "<p><input type='text' id='adresse' name='adresse' value='adresse'></p>";
+        echo "<p><label for='competence'>Compétence :</label></p>";
+        echo "<textarea id='competence' name='competence' wrap='soft'></textarea>";
+        echo "<p><input type='text' id='pays' name='pays' value='pays'></p>";
+        echo "<p><label for='experience'>Experience :</label></p>";
+        echo "<p><textarea id='experience' name='experience' wrap='soft'></textarea></p>";
+        echo "<p><input type='text' id='telephone' name='telephone' value='Telephone'></p>";
+        echo "<p><input type='text' id='email' name='email' value='email'></p>";
 
+        echo "<p><input type='text' id='verif_telephone' name='verif_telephone' value='verif_telephone'></p>";
+        echo "<p><input type='text' id='verif_email' name='verif_email' value='verif_email'></p>";
+
+        echo "<input type='submit' name='modifier' value='Modifier'>";
+        echo "</form>";
+
+        // Si le formulaire de modification est soumis
+        if (isset($_POST['modifier'])) {
+            // Mettre à jour les données dans la base de données
+            $update_query = "UPDATE informations SET Prenom = :prenom, Nom = :nom, Telephone = :telephone, Pays = :pays, Adresse = :adresse, Email = :email, Competence = :competence, Experience = :experience WHERE Email = :verif_email AND Telephone = :verif_telephone";
+
+            $update_statement = $dbh->prepare($update_query);
+            $update_statement->bindParam(':prenom', $_POST['prenom']);
+            $update_statement->bindParam(':nom', $_POST['nom']);
+            $update_statement->bindParam(':telephone', $_POST['telephone']);
+            $update_statement->bindParam(':pays', $_POST['pays']);
+            $update_statement->bindParam(':adresse', $_POST['adresse']);
+            $update_statement->bindParam(':email', $_POST['email']);
+            $update_statement->bindParam(':competence', $_POST['competence']);
+            $update_statement->bindParam(':experience', $_POST['experience']);
+            $update_statement->bindParam(':verif_email', $_POST['verif_email']);
+            $update_statement->bindParam(':verif_telephone', $_POST['verif_telephone']);
+
+            // Exécutez la requête de mise à jour
+            if ($update_statement->execute()) {
+                echo "Données mises à jour avec succès.";
+                // Redirigez l'utilisateur vers une autre page ou affichez un message de confirmation
+            } else {
+                echo "Erreur lors de la mise à jour des données.";
+            }
+        }
     } else {
         if (empty($prenom) || empty($nom) || empty($telephone) || empty($pays) || empty($adresse) || empty($email) || empty($competence) || empty($experience)) {
             echo "Veuillez remplir tous les champs du formulaire.";
