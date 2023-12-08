@@ -38,6 +38,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $existing_data = $verification->fetch(PDO::FETCH_ASSOC);
 
     if ($existing_data) {
+        echo "<link rel='stylesheet' href='/index.css'> ";
         echo "<p>Données existantes liées à cet utilisateur :</p>";
         echo "<p>Prénom : " . $existing_data['Prenom'] . "</p>";
         echo "<p>Nom : " . $existing_data['Nom'] . "</p>";
@@ -47,29 +48,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         echo "<p>Téléphone : " . $existing_data['Telephone'] . "</p>";
         echo "<p>Experience : " . $existing_data['Experience'] . "</p>";
         echo "<p>Competence : " . $existing_data['Competence'] . "</p>";
-
         echo "<p>Souhaitez-vous modifier des données ? </p>";
         echo "<form method='post'>";
         echo "<input type='text' name='prenom' value='" . $existing_data['Prenom'] . "'><br>";
-        echo "<p><input type='text' id='nom' name='nom' value='nom'></p>";
-        echo "<p><input type='text' id='adresse' name='adresse' value='adresse'></p>";
-        echo "<p><label for='competence'>Compétence :</label></p>";
+        echo "<input type='text' id='nom' name='nom' value='nom'></p>";
+        echo "<input type='text' id='adresse' name='adresse' value='adresse'>";
+        echo "<label for='competence'>Compétence :</label>";
         echo "<textarea id='competence' name='competence' wrap='soft'></textarea>";
-        echo "<p><input type='text' id='pays' name='pays' value='pays'></p>";
-        echo "<p><label for='experience'>Experience :</label></p>";
-        echo "<p><textarea id='experience' name='experience' wrap='soft'></textarea></p>";
-        echo "<p><input type='text' id='telephone' name='telephone' value='Telephone'></p>";
-        echo "<p><input type='text' id='email' name='email' value='email'></p>";
+        echo "<input type='text' id='pays' name='pays' value='pays'>";
+        echo "<label for='experience'>Experience :</label>";
+        echo "<textarea id='experience' name='experience' wrap='soft'></textarea>";
+        echo "<input type='text' id='telephone' name='telephone' value='Telephone'>";
+        echo "<input type='text' id='email' name='email' value='email'>";
 
-        echo "<p><input type='text' id='verif_telephone' name='verif_telephone' value='verif_telephone'></p>";
-        echo "<p><input type='text' id='verif_email' name='verif_email' value='verif_email'></p>";
+        echo "<input type='text' id='verif_telephone' name='verif_telephone' value='verif_telephone'>";
+        echo "<input type='text' id='verif_email' name='verif_email' value='verif_email'>";
 
         echo "<input type='submit' name='modifier' value='Modifier'>";
         echo "</form>";
 
-        // Si le formulaire de modification est soumis
         if (isset($_POST['modifier'])) {
-            // Mettre à jour les données dans la base de données
             $update_query = "UPDATE informations SET Prenom = :prenom, Nom = :nom, Telephone = :telephone, Pays = :pays, Adresse = :adresse, Email = :email, Competence = :competence, Experience = :experience WHERE Email = :verif_email AND Telephone = :verif_telephone";
 
             $update_statement = $dbh->prepare($update_query);
@@ -84,7 +82,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $update_statement->bindParam(':verif_email', $_POST['verif_email']);
             $update_statement->bindParam(':verif_telephone', $_POST['verif_telephone']);
 
-            // Exécutez la requête de mise à jour
             if ($update_statement->execute()) {
                 echo "Données mises à jour avec succès.";
                 // Redirigez l'utilisateur vers une autre page ou affichez un message de confirmation
@@ -131,7 +128,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $errorInfo = $dbh->errorInfo();
                     echo "Erreur lors de l'insertion : " . $requete . "<br>" . $errorInfo[2];
                 }
-
                 $dbh = null;
             } catch (Exception $e) {
                 echo 'Exception capturée : ', $e->getMessage(), "\n";

@@ -43,7 +43,6 @@
         <input type="text" id="ville" name="ville" value="Ville">
     </div>
     <p>Vous avez déjà envoyer un CV ?</p>
-    <a href="/modifierData.php">Ici</a>
     <div class="input-group">
         <label for="verif_email">Adresse e-mail pour vérification :</label>
         <input type="text" id="verif_email" name="verif_email" placeholder="Entrez votre adresse e-mail">
