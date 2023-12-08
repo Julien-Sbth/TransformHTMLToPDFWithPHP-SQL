@@ -48,7 +48,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         echo "<p>Téléphone : " . $existing_data['Telephone'] . "</p>";
         echo "<p>Experience : " . $existing_data['Experience'] . "</p>";
         echo "<p>Competence : " . $existing_data['Competence'] . "</p>";
+
         echo "<p>Souhaitez-vous modifier des données ? </p>";
+
         echo "<form method='post'>";
         echo "<input type='text' name='prenom' value='" . $existing_data['Prenom'] . "'><br>";
         echo "<input type='text' id='nom' name='nom' value='nom'></p>";
@@ -61,8 +63,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         echo "<input type='text' id='telephone' name='telephone' value='Telephone'>";
         echo "<input type='text' id='email' name='email' value='email'>";
 
-        echo "<input type='text' id='verif_telephone' name='verif_telephone' value='verif_telephone'>";
-        echo "<input type='text' id='verif_email' name='verif_email' value='verif_email'>";
+        echo "<input type='hidden' id='verif_telephone' name='verif_telephone' value='verif_telephone'>";
+        echo "<input type='hidden' id='verif_email' name='verif_email' value='verif_email'>";
 
         echo "<input type='submit' name='modifier' value='Modifier'>";
         echo "</form>";
