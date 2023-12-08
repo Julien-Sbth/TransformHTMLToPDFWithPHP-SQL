@@ -53,15 +53,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         echo "<form method='post'>";
         echo "<input type='text' name='prenom' value='" . $existing_data['Prenom'] . "'><br>";
-        echo "<input type='text' id='nom' name='nom' value='nom'></p>";
-        echo "<input type='text' id='adresse' name='adresse' value='adresse'>";
+        echo "<input type='text' name='nom' value='" . $existing_data['Nom'] . "'><br>";
+        echo "<input type='text' name='adresse' value='" . $existing_data['Adresse'] . "'><br>";
         echo "<label for='competence'>Compétence :</label>";
-        echo "<textarea id='competence' name='competence' wrap='soft'></textarea>";
-        echo "<input type='text' id='pays' name='pays' value='pays'>";
+        echo "<textarea id='competence' name='competence' wrap='soft' ></textarea>";
+        echo "<input type='text' id='pays' name='pays' value='" . $existing_data['Pays'] . "'>";
         echo "<label for='experience'>Experience :</label>";
-        echo "<textarea id='experience' name='experience' wrap='soft'></textarea>";
-        echo "<input type='text' id='telephone' name='telephone' value='Telephone'>";
-        echo "<input type='text' id='email' name='email' value='email'>";
+        echo "<textarea id='experience' name='experience' wrap='soft' required></textarea>";
+        echo "<input type='text' id='telephone' name='telephone' value='" . $existing_data['Telephone'] . "' required>";
+        echo "<input type='text' id='email' name='email' value='" . $existing_data['Email'] . "' required>";
 
         echo "<input type='hidden' id='verif_telephone' name='verif_telephone' value='verif_telephone'>";
         echo "<input type='hidden' id='verif_email' name='verif_email' value='verif_email'>";
