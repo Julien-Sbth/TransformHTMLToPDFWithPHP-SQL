@@ -59,10 +59,10 @@ textarea {
     height: 100px;
 }
 .centered-content {
-    text-align: center; /* Pour centrer le texte à l'intérieur du conteneur */
+    text-align: center;
 }
 .centered-content p {
-    display: block; /* Assure que chaque paragraphe est sur une nouvelle ligne */
-    margin: 10px auto; /* Ajoute de l'espace autour de chaque paragraphe et centre le contenu horizontalement */
-    width: 50%; /* Modifiez la largeur selon vos besoins */
+    display: block;
+    margin: 10px auto;
+    width: 50%;
 }
