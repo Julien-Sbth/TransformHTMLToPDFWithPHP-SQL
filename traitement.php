@@ -39,7 +39,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if ($existing_data) {
         echo "<link rel='stylesheet' href='/index.css'> ";
-        echo "<p>Données existantes liées à cet utilisateur :</p>";
+        echo "<div class='centered-content'>";
+        echo "<p>Données existantes de l'utilisateur :</p>";
         echo "<p>Prénom : " . $existing_data['Prenom'] . "</p>";
         echo "<p>Nom : " . $existing_data['Nom'] . "</p>";
         echo "<p>Pays : " . $existing_data['Pays'] . "</p>";
@@ -48,20 +49,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         echo "<p>Téléphone : " . $existing_data['Telephone'] . "</p>";
         echo "<p>Experience : " . $existing_data['Experience'] . "</p>";
         echo "<p>Competence : " . $existing_data['Competence'] . "</p>";
-
-        echo "<p>Souhaitez-vous modifier des données ? </p>";
+        echo "</div>";
 
         echo "<form method='post'>";
-        echo "<input type='text' name='prenom' value='" . $existing_data['Prenom'] . "'><br>";
-        echo "<input type='text' name='nom' value='" . $existing_data['Nom'] . "'><br>";
-        echo "<input type='text' name='adresse' value='" . $existing_data['Adresse'] . "'><br>";
+        echo "<p>Souhaitez-vous modifier des données ? </p>";
+        echo "<input type='text' name='prenom' placeholder='" . $existing_data['Prenom'] . "'><br>";
+        echo "<input type='text' name='nom' placeholder='" . $existing_data['Nom'] . "'><br>";
+        echo "<input type='text' name='adresse' placeholder='" . $existing_data['Adresse'] . "'><br>";
         echo "<label for='competence'>Compétence :</label>";
         echo "<textarea id='competence' name='competence' wrap='soft' ></textarea>";
-        echo "<input type='text' id='pays' name='pays' value='" . $existing_data['Pays'] . "'>";
+        echo "<input type='text' id='pays' name='pays' placeholder='" . $existing_data['Pays'] . "'>";
         echo "<label for='experience'>Experience :</label>";
         echo "<textarea id='experience' name='experience' wrap='soft' required></textarea>";
-        echo "<input type='text' id='telephone' name='telephone' value='" . $existing_data['Telephone'] . "' required>";
-        echo "<input type='text' id='email' name='email' value='" . $existing_data['Email'] . "' required>";
+        echo "<input type='text' id='telephone' name='telephone' placeholder='" . $existing_data['Telephone'] . "' required>";
+        echo "<input type='text' id='email' name='email' placeholder='" . $existing_data['Email'] . "' required>";
 
         echo "<input type='hidden' id='verif_telephone' name='verif_telephone' value='verif_telephone'>";
         echo "<input type='hidden' id='verif_email' name='verif_email' value='verif_email'>";
