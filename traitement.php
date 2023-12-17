@@ -1,4 +1,5 @@
 <?php
+global $html;
 require_once __DIR__ . "/vendor/autoload.php";
 
 use Dompdf\Dompdf;
@@ -27,6 +28,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = $_POST["email"];
     $langue1 = $_POST["langue1"];
     $langue2 = $_POST["langue2"];
+    $formation = $_POST["formation"];
+    $objectif = $_POST["objectif"];
+    $profession = $_POST["profession"];
     $competence = wrapText($_POST["competence"], 50);
     $experience = wrapText($_POST["experience"], 50);
 
@@ -38,6 +42,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $verification->bindParam(':verif_telephone', $verif_telephone);
     $verification->execute();
     $existing_data = $verification->fetch(PDO::FETCH_ASSOC);
+
+    $image_path = null;
+
+    if (isset($_FILES['image']) && $_FILES['image']['error'] == UPLOAD_ERR_OK) {
+        $image_base64 = base64_encode(file_get_contents($_FILES['image']['tmp_name']));
+        $image_data = 'data:' . mime_content_type($_FILES['image']['tmp_name']) . ';base64,' . $image_base64;
+
+        // Intégration de l'image dans le HTML du CV
+        $html .= "<img src='$image_data' alt='Image du CV'>";
+    }
 
     if ($existing_data) {
         echo "<link rel='stylesheet' href='/index.css'> ";
@@ -51,6 +65,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         echo "<p>Téléphone : " . $existing_data['Telephone'] . "</p>";
         echo "<p>Experience : " . $existing_data['Experience'] . "</p>";
         echo "<p>Competence : " . $existing_data['Competence'] . "</p>";
+        echo "<p>Profession : " . $existing_data['Profession'] . "</p>";
+        echo "<p>Objectif : " . $existing_data['Objectif'] . "</p>";
         echo "</div>";
 
         echo "<form method='post'>";
@@ -58,6 +74,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         echo "<input type='text' name='prenom' placeholder='" . $existing_data['Prenom'] . "'><br>";
         echo "<input type='text' name='nom' placeholder='" . $existing_data['Nom'] . "'><br>";
         echo "<input type='text' name='adresse' placeholder='" . $existing_data['Adresse'] . "'><br>";
+        echo "<input type='text' name='profession' placeholder='" . $existing_data['Profession'] . "'><br>";
+        echo "<input type='text' name='objectif' placeholder='" . $existing_data['Objectif'] . "'><br>";
         echo "<label for='competence'>Compétence :</label>";
         echo "<textarea id='competence' name='competence' placeholder='" . $existing_data['Pays'] . "' wrap='soft' ></textarea>";
         echo "<label for='experience'>Experience :</label>";
@@ -83,6 +101,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $update_statement->bindParam(':email', $_POST['email']);
             $update_statement->bindParam(':competence', $_POST['competence']);
             $update_statement->bindParam(':experience', $_POST['experience']);
+            $update_statement->bindParam(':profession', $_POST['profession']);
+            $update_statement->bindParam(':objectif', $_POST['objectif']);
             $update_statement->bindParam(':verif_email', $_POST['verif_email']);
             $update_statement->bindParam(':verif_telephone', $_POST['verif_telephone']);
 
@@ -96,7 +116,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if (empty($prenom) || empty($nom) || empty($telephone) || empty($pays) || empty($adresse) || empty($email) || empty($competence) || empty($experience) || empty($langue1) || empty($langue2)) {
             echo "Veuillez remplir tous les champs du formulaire.";
         } else {
-            $requete = "INSERT INTO informations (Pays, Prenom, Nom, Telephone, Adresse, Email, Competence, Experience, Langue1, Langue2) VALUES ('$pays', '$prenom', '$nom', '$telephone', '$adresse', '$email', '$competence', '$experience', '$langue1', '$langue2' )";
+            $requete = "INSERT INTO informations (Pays, Prenom, Nom, Telephone, Adresse, Email, Competence, Experience, Langue1, Langue2, Profession, Formation, Objectif) VALUES ('$pays', '$prenom', '$nom', '$telephone', '$adresse', '$email', '$competence', '$experience', '$langue1', '$langue2', '$profession', '$formation', '$objectif' )";
 
             try {
                 $insertion = $dbh->query($requete);
@@ -119,8 +139,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $html .= "<tr><td><strong>Email:</strong></td><td>$email</td></tr>";
                     $html .= "<tr><td><strong>Compétence:</strong></td><td>$competence</td></tr>";
                     $html .= "<tr><td><strong>Expérience:</strong></td><td>$experience</td></tr>";
+                    $html .= "<tr><td><strong>Objectif:</strong></td><td>$objectif</td></tr>";
                     $html .= "<tr><td><strong>Langue1:</strong></td><td>$langue1</td></tr>";
                     $html .= "<tr><td><strong>Langue2:</strong></td><td>$langue2</td></tr>";
+                    $html .= "<tr><td><strong>Profession:</strong></td><td>$profession</td></tr>";
+                    $html .= "<tr><td><strong>Formation:</strong></td><td>$formation</td></tr>";
+
                     $html .= "</table></body></html>";
 
                     $html .= "<strong>Informations personnelles</strong>";
