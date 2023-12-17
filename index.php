@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
     <title>Formulaire</title>
-    <link rel="stylesheet" href="/index.css">
+    <link rel="stylesheet" href="index.css">
 </head>
 <body>
 <form action="traitement.php" method="post" class="form-grid" enctype="multipart/form-data">
@@ -44,6 +44,10 @@
         <input type="text" id="ville" name="ville" placeholder="Ville">
     </div>
     <div class="input-group">
+        <label for="profession">Profession :</label>
+        <input type="text" id="profession" name="profession" placeholder="profession">
+    </div>
+    <div class="input-group">
         <label for="langue1">Langue 1 :</label>
         <input type="text" id="langue1" name="langue1" placeholder="Langue 1">
     </div>
@@ -51,7 +55,14 @@
         <label for="langue2">Langue 2 :</label>
         <input type="text" id="langue2" name="langue2" placeholder="Langue 2">
     </div>
-
+    <div class="input-group">
+        <label for="objectif">Objectif:</label>
+        <input type="text" id="objectif" name="objectif" placeholder="objectif">
+    </div>
+    <div class="input-group">
+        <label for="formation">Formation:</label>
+        <input type="text" id="formation" name="formation" placeholder="formation">
+    </div>
     <p>Vous avez déjà envoyer un CV ?</p>
     <div class="input-group">
         <label for="verif_email">Adresse e-mail pour vérification :</label>
@@ -61,7 +72,6 @@
         <label for="verif_telephone">Numéro de téléphone pour vérification :</label>
         <input type="text" id="verif_telephone" name="verif_telephone" placeholder="Entrez votre numéro de téléphone">
     </div>
-
     <input type="submit" value="Envoyer">
 </form>
 </body>

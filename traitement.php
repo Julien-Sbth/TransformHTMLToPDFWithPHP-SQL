@@ -49,7 +49,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $image_base64 = base64_encode(file_get_contents($_FILES['image']['tmp_name']));
         $image_data = 'data:' . mime_content_type($_FILES['image']['tmp_name']) . ';base64,' . $image_base64;
 
-        // Intégration de l'image dans le HTML du CV
         $html .= "<img src='$image_data' alt='Image du CV'>";
     }
 
@@ -144,10 +143,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $html .= "<tr><td><strong>Langue2:</strong></td><td>$langue2</td></tr>";
                     $html .= "<tr><td><strong>Profession:</strong></td><td>$profession</td></tr>";
                     $html .= "<tr><td><strong>Formation:</strong></td><td>$formation</td></tr>";
-
                     $html .= "</table></body></html>";
-
-                    $html .= "<strong>Informations personnelles</strong>";
 
                     $dompdf->loadHtml($html);
                     $dompdf->render();

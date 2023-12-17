@@ -2,12 +2,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
     margin: 0;
-}
-
-form {
-    width: 300px;
 }
 
 input,
@@ -27,14 +22,6 @@ label,
 input[type="text"],
 input[type="submit"] {
     display: block;
-}
-
-.form-grid {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    max-width: 600px;
-    margin: 0 auto;
 }
 
 .input-group {
