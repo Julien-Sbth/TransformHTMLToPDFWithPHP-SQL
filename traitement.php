@@ -25,6 +25,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $pays = $_POST["pays"];
     $adresse = $_POST["adresse"];
     $email = $_POST["email"];
+    $langue1 = $_POST["langue1"];
+    $langue2 = $_POST["langue2"];
     $competence = wrapText($_POST["competence"], 50);
     $experience = wrapText($_POST["experience"], 50);
 
@@ -57,8 +59,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         echo "<input type='text' name='nom' placeholder='" . $existing_data['Nom'] . "'><br>";
         echo "<input type='text' name='adresse' placeholder='" . $existing_data['Adresse'] . "'><br>";
         echo "<label for='competence'>Compétence :</label>";
-        echo "<textarea id='competence' name='competence' wrap='soft' ></textarea>";
-        echo "<input type='text' id='pays' name='pays' placeholder='" . $existing_data['Pays'] . "'>";
+        echo "<textarea id='competence' name='competence' placeholder='" . $existing_data['Pays'] . "' wrap='soft' ></textarea>";
         echo "<label for='experience'>Experience :</label>";
         echo "<textarea id='experience' name='experience' wrap='soft' required></textarea>";
         echo "<input type='text' id='telephone' name='telephone' placeholder='" . $existing_data['Telephone'] . "' required>";
@@ -87,16 +88,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             if ($update_statement->execute()) {
                 echo "Données mises à jour avec succès.";
-                // Redirigez l'utilisateur vers une autre page ou affichez un message de confirmation
             } else {
                 echo "Erreur lors de la mise à jour des données.";
             }
         }
     } else {
-        if (empty($prenom) || empty($nom) || empty($telephone) || empty($pays) || empty($adresse) || empty($email) || empty($competence) || empty($experience)) {
+        if (empty($prenom) || empty($nom) || empty($telephone) || empty($pays) || empty($adresse) || empty($email) || empty($competence) || empty($experience) || empty($langue1) || empty($langue2)) {
             echo "Veuillez remplir tous les champs du formulaire.";
         } else {
-            $requete = "INSERT INTO informations (Pays, Prenom, Nom, Telephone, Adresse, Email, Competence, Experience) VALUES ('$pays', '$prenom', '$nom', '$telephone', '$adresse', '$email', '$competence', '$experience' )";
+            $requete = "INSERT INTO informations (Pays, Prenom, Nom, Telephone, Adresse, Email, Competence, Experience, Langue1, Langue2) VALUES ('$pays', '$prenom', '$nom', '$telephone', '$adresse', '$email', '$competence', '$experience', '$langue1', '$langue2' )";
 
             try {
                 $insertion = $dbh->query($requete);
@@ -108,6 +108,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                     $dompdf = new Dompdf();
                     $html = "<html><body style='text-align: left;'><table border='1' style='margin: auto;'>";
+                    $html .= "<h1> Générateur de CV</h1>";
+                    $html .= "<p>Date du CV : " . date('Y-m-d H:i:s') . "</p>";
                     $html .= "<p> CV de : $prenom</p>";
                     $html .= "<tr><td><strong>Prénom:</strong></td><td>$prenom</td></tr>";
                     $html .= "<tr><td><strong>Nom:</strong></td><td>$nom</td></tr>";
@@ -117,7 +119,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $html .= "<tr><td><strong>Email:</strong></td><td>$email</td></tr>";
                     $html .= "<tr><td><strong>Compétence:</strong></td><td>$competence</td></tr>";
                     $html .= "<tr><td><strong>Expérience:</strong></td><td>$experience</td></tr>";
+                    $html .= "<tr><td><strong>Langue1:</strong></td><td>$langue1</td></tr>";
+                    $html .= "<tr><td><strong>Langue2:</strong></td><td>$langue2</td></tr>";
                     $html .= "</table></body></html>";
+
+                    $html .= "<strong>Informations personnelles</strong>";
 
                     $dompdf->loadHtml($html);
                     $dompdf->render();

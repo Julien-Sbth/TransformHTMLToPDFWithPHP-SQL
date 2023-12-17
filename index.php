@@ -5,7 +5,7 @@
     <link rel="stylesheet" href="/index.css">
 </head>
 <body>
-<form action="traitement.php" method="post" class="form-grid">
+<form action="traitement.php" method="post" class="form-grid" enctype="multipart/form-data">
     <div class="input-group">
         <label for="prenom">Prénom :</label>
         <input type="text" id="prenom" name="prenom" placeholder="Prénom">
@@ -38,10 +38,20 @@
         <label for="experience">Experience :</label>
         <textarea id="experience" name="experience" wrap="soft" placeholder="Expérience"></textarea>
     </div>
+
     <div class="input-group">
         <label for="ville">Ville :</label>
         <input type="text" id="ville" name="ville" placeholder="Ville">
     </div>
+    <div class="input-group">
+        <label for="langue1">Langue 1 :</label>
+        <input type="text" id="langue1" name="langue1" placeholder="Langue 1">
+    </div>
+    <div class="input-group">
+        <label for="langue2">Langue 2 :</label>
+        <input type="text" id="langue2" name="langue2" placeholder="Langue 2">
+    </div>
+
     <p>Vous avez déjà envoyer un CV ?</p>
     <div class="input-group">
         <label for="verif_email">Adresse e-mail pour vérification :</label>
@@ -56,6 +66,3 @@
 </form>
 </body>
 </html>
-<!-- l'utilisateur doit pouvoir revenir sur le pdf, récupérer l'ancien pdf et le modifier, afficher toutes les données
-
- Partie Données personnelle, numero prenom adresse mail nom-->
