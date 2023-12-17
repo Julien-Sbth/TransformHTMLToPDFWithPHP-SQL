@@ -64,6 +64,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         echo "<p>Téléphone : " . $existing_data['Telephone'] . "</p>";
         echo "<p>Experience : " . $existing_data['Experience'] . "</p>";
         echo "<p>Competence : " . $existing_data['Competence'] . "</p>";
+        echo "<p>Première Langue : " . $existing_data['Langue1'] . "</p>";
+        echo "<p>Deuxieme Langue : " . $existing_data['Langue2'] . "</p>";
         echo "<p>Profession : " . $existing_data['Profession'] . "</p>";
         echo "<p>Objectif : " . $existing_data['Objectif'] . "</p>";
         echo "</div>";
@@ -72,15 +74,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         echo "<p>Souhaitez-vous modifier des données ? </p>";
         echo "<input type='text' name='prenom' placeholder='" . $existing_data['Prenom'] . "'><br>";
         echo "<input type='text' name='nom' placeholder='" . $existing_data['Nom'] . "'><br>";
+        echo "<input type='text' name='pays' placeholder='" . $existing_data['Pays'] . "'><br>";
         echo "<input type='text' name='adresse' placeholder='" . $existing_data['Adresse'] . "'><br>";
         echo "<input type='text' name='profession' placeholder='" . $existing_data['Profession'] . "'><br>";
         echo "<input type='text' name='objectif' placeholder='" . $existing_data['Objectif'] . "'><br>";
+        echo "<input type='text' name='formation' placeholder='" . $existing_data['Formation'] . "'><br>";
+        echo "<input type='text' name='langue1' placeholder='" . $existing_data['Langue1'] . "'><br>";
+        echo "<input type='text' name='langue2' placeholder='" . $existing_data['Langue2'] . "'><br>";
         echo "<label for='competence'>Compétence :</label>";
         echo "<textarea id='competence' name='competence' placeholder='" . $existing_data['Pays'] . "' wrap='soft' ></textarea>";
         echo "<label for='experience'>Experience :</label>";
         echo "<textarea id='experience' name='experience' wrap='soft' required></textarea>";
-        echo "<input type='text' id='telephone' name='telephone' placeholder='" . $existing_data['Telephone'] . "' required>";
-        echo "<input type='text' id='email' name='email' placeholder='" . $existing_data['Email'] . "' required>";
+        echo "<input type='mobile' id='telephone' name='telephone' placeholder='" . $existing_data['Telephone'] . "' required>";
+        echo "<input type='email' id='email' name='email' placeholder='" . $existing_data['Email'] . "' required>";
 
         echo "<input type='hidden' id='verif_telephone' name='verif_telephone' value='verif_telephone'>";
         echo "<input type='hidden' id='verif_email' name='verif_email' value='verif_email'>";
@@ -89,7 +95,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         echo "</form>";
 
         if (isset($_POST['modifier'])) {
-            $update_query = "UPDATE informations SET Prenom = :prenom, Nom = :nom, Telephone = :telephone, Pays = :pays, Adresse = :adresse, Email = :email, Competence = :competence, Experience = :experience WHERE Email = :verif_email AND Telephone = :verif_telephone";
+            $update_query = "UPDATE informations SET Prenom = :prenom, Nom = :nom, Telephone = :telephone, Pays = :pays, Adresse = :adresse, Email = :email, Competence = :competence, Experience = :experience, Formation =:formation WHERE Email = :verif_email AND Telephone = :verif_telephone";
 
             $update_statement = $dbh->prepare($update_query);
             $update_statement->bindParam(':prenom', $_POST['prenom']);
@@ -101,6 +107,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $update_statement->bindParam(':competence', $_POST['competence']);
             $update_statement->bindParam(':experience', $_POST['experience']);
             $update_statement->bindParam(':profession', $_POST['profession']);
+            $update_statement->bindParam(':formation', $_POST['formation']);
+            $update_statement->bindParam(':langue1', $_POST['langue1']);
+            $update_statement->bindParam(':langue2', $_POST['langue2']);
             $update_statement->bindParam(':objectif', $_POST['objectif']);
             $update_statement->bindParam(':verif_email', $_POST['verif_email']);
             $update_statement->bindParam(':verif_telephone', $_POST['verif_telephone']);
@@ -112,9 +121,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
         }
     } else {
-        if (empty($prenom) || empty($nom) || empty($telephone) || empty($pays) || empty($adresse) || empty($email) || empty($competence) || empty($experience) || empty($langue1) || empty($langue2)) {
-            echo "Veuillez remplir tous les champs du formulaire.";
-        } else {
             $requete = "INSERT INTO informations (Pays, Prenom, Nom, Telephone, Adresse, Email, Competence, Experience, Langue1, Langue2, Profession, Formation, Objectif) VALUES ('$pays', '$prenom', '$nom', '$telephone', '$adresse', '$email', '$competence', '$experience', '$langue1', '$langue2', '$profession', '$formation', '$objectif' )";
 
             try {
@@ -128,7 +134,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $dompdf = new Dompdf();
                     $html = "<html><body style='text-align: left;'><table border='1' style='margin: auto;'>";
                     $html .= "<h1> Générateur de CV</h1>";
-                    $html .= "<p>Date du CV : " . date('Y-m-d H:i:s') . "</p>";
+                    $html .= "<p>Date du CV : " . date('d-m-Y') . "</p>";
                     $html .= "<p> CV de : $prenom</p>";
                     $html .= "<tr><td><strong>Prénom:</strong></td><td>$prenom</td></tr>";
                     $html .= "<tr><td><strong>Nom:</strong></td><td>$nom</td></tr>";
@@ -162,6 +168,5 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 echo 'Exception capturée : ', $e->getMessage(), "\n";
             }
         }
-    }
 }
 ?>
