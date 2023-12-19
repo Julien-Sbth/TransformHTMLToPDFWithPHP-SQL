@@ -1,0 +1,86 @@
+<html>
+<head>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            background-color: #f4f4f4;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            page-break-inside: avoid
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .header h1 {
+            margin: 5px 0;
+            color: #333;
+        }
+        .section {
+            margin-bottom: 20px;
+        }
+        .section-title {
+            font-size: 24px;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        .section-content p {
+            margin: 5px 0;
+        }
+        strong {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+<div class='container'>
+    <div class='header'>
+        <h1>CV de {{prenom}}</h1>
+        <p>Date du CV : {{date}}</p>
+    </div>
+    <div class='section'>
+        <div class='section-title'>Informations Personnelles</div>
+        <div class='section-content'>
+            <p><strong>Téléphone:</strong> {{telephone}}</p>
+            <p><strong>Email:</strong> {{email}}</p>
+            <p><strong>Adresse:</strong> {{adresse}}, {{pays}}</p>
+        </div>
+    </div>
+    <div class='section'>
+        <div class='section-title'>Profil</div>
+        <div class='section-content'>
+            <p><strong>Profession:</strong> {{profession}}</p>
+            <p><strong>Objectif:</strong> {{objectif}}</p>
+        </div>
+    </div>
+    <div class='section'>
+        <div class='section-title'>Expérience et Compétences</div>
+        <div class='section-content'>
+            <p><strong>Expérience:</strong></p>
+            <p>{{experience}}</p>
+            <p><strong>Compétence:</strong></p>
+            <p>{{competence}}</p>
+        </div>
+    </div>
+    <div class='section'>
+        <div class='section-title'>Formation et Langues</div>
+        <div class='section-content'>
+            <p><strong>Formation:</strong></p>
+            <p>{{formation}}</p>
+            <p><strong>Langues:</strong></p>
+            <p>{{langue1}}, {{langue2}}</p>
+        </div>
+    </div>
+</div>
+</body>
+</html>

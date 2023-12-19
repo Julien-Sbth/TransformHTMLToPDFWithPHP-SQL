@@ -121,36 +121,31 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
         }
     } else {
+        if (empty($prenom) || empty($nom) || empty($telephone) || empty($pays) || empty($adresse) || empty($email) || empty($competence) || empty($experience)) {
+            echo "Veuillez remplir tous les champs du formulaire.";
+        } else {
+            // Construction de la requête d'insertion (supposant que $dbh est votre connexion à la base de données)
             $requete = "INSERT INTO informations (Pays, Prenom, Nom, Telephone, Adresse, Email, Competence, Experience, Langue1, Langue2, Profession, Formation, Objectif) VALUES ('$pays', '$prenom', '$nom', '$telephone', '$adresse', '$email', '$competence', '$experience', '$langue1', '$langue2', '$profession', '$formation', '$objectif' )";
 
             try {
-                $insertion = $dbh->query($requete);
+                // Exécution de la requête d'insertion
+                $insertion = $dbh->exec($requete);
 
                 if ($insertion !== false) {
                     echo "Données insérées avec succès dans la base de données.";
 
-                    echo "<p>Prénom : $prenom</p><p>Nom : $nom</p><p>Téléphone : $telephone</p><p>Pays : $pays</p><p>Adresse : $adresse</p><p>Email : $email</p><p>Compétence : $competence</p><p>Experience : $experience</p>";
+                    // Charger le contenu du fichier HTML
+                    $template_file = 'cv.html';
+                    $html = file_get_contents($template_file);
+
+                    // Remplacer les variables du template avec les données correspondantes
+                    $html = str_replace(
+                        ['{{prenom}}', '{{nom}}', '{{telephone}}', '{{pays}}', '{{adresse}}', '{{email}}', '{{competence}}', '{{experience}}', '{{formation}}', '{{profession}}', '{{objectif}}', '{{langue1}}', '{{langue2}}', '{{date}}'],
+                        [$prenom, $nom, $telephone, $pays, $adresse, $email, $competence, $experience, $formation, $objectif, $profession, $langue1, $langue2, date('d-m-Y')],
+                        $html
+                    );
 
                     $dompdf = new Dompdf();
-                    $html = "<html><body style='text-align: left;'><table border='1' style='margin: auto;'>";
-                    $html .= "<h1> Générateur de CV</h1>";
-                    $html .= "<p>Date du CV : " . date('d-m-Y') . "</p>";
-                    $html .= "<p> CV de : $prenom</p>";
-                    $html .= "<tr><td><strong>Prénom:</strong></td><td>$prenom</td></tr>";
-                    $html .= "<tr><td><strong>Nom:</strong></td><td>$nom</td></tr>";
-                    $html .= "<tr><td><strong>Téléphone:</strong></td><td>$telephone</td></tr>";
-                    $html .= "<tr><td><strong>Pays:</strong></td><td>$pays</td></tr>";
-                    $html .= "<tr><td><strong>Adresse:</strong></td><td>$adresse</td></tr>";
-                    $html .= "<tr><td><strong>Email:</strong></td><td>$email</td></tr>";
-                    $html .= "<tr><td><strong>Compétence:</strong></td><td>$competence</td></tr>";
-                    $html .= "<tr><td><strong>Expérience:</strong></td><td>$experience</td></tr>";
-                    $html .= "<tr><td><strong>Objectif:</strong></td><td>$objectif</td></tr>";
-                    $html .= "<tr><td><strong>Langue1:</strong></td><td>$langue1</td></tr>";
-                    $html .= "<tr><td><strong>Langue2:</strong></td><td>$langue2</td></tr>";
-                    $html .= "<tr><td><strong>Profession:</strong></td><td>$profession</td></tr>";
-                    $html .= "<tr><td><strong>Formation:</strong></td><td>$formation</td></tr>";
-                    $html .= "</table></body></html>";
-
                     $dompdf->loadHtml($html);
                     $dompdf->render();
 
@@ -163,10 +158,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $errorInfo = $dbh->errorInfo();
                     echo "Erreur lors de l'insertion : " . $requete . "<br>" . $errorInfo[2];
                 }
+
                 $dbh = null;
             } catch (Exception $e) {
                 echo 'Exception capturée : ', $e->getMessage(), "\n";
             }
         }
+    }
 }
 ?>
