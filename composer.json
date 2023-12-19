@@ -2,6 +2,7 @@
     "require": {
         "dompdf/dompdf": "^2.0",
         "ext-mysqli": "*",
-      "ext-pdo": "*"
+      "ext-pdo": "*",
+      "ext-fileinfo": "*"
     }
 }
