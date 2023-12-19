@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
     <title>Formulaire</title>
-    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="css/index.css">
 </head>
 <body>
 <form action="traitement.php" method="post" class="form-grid" enctype="multipart/form-data">

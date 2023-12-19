@@ -53,7 +53,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     if ($existing_data) {
-        echo "<link rel='stylesheet' href='/index.css'> ";
+        echo "<link rel='stylesheet' href='/css/index.css'> ";
         echo "<div class='centered-content'>";
         echo "<p>Données existantes de l'utilisateur :</p>";
         echo "<p>Prénom : " . $existing_data['Prenom'] . "</p>";
@@ -124,21 +124,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if (empty($prenom) || empty($nom) || empty($telephone) || empty($pays) || empty($adresse) || empty($email) || empty($competence) || empty($experience)) {
             echo "Veuillez remplir tous les champs du formulaire.";
         } else {
-            // Construction de la requête d'insertion (supposant que $dbh est votre connexion à la base de données)
             $requete = "INSERT INTO informations (Pays, Prenom, Nom, Telephone, Adresse, Email, Competence, Experience, Langue1, Langue2, Profession, Formation, Objectif) VALUES ('$pays', '$prenom', '$nom', '$telephone', '$adresse', '$email', '$competence', '$experience', '$langue1', '$langue2', '$profession', '$formation', '$objectif' )";
 
             try {
-                // Exécution de la requête d'insertion
                 $insertion = $dbh->exec($requete);
 
                 if ($insertion !== false) {
                     echo "Données insérées avec succès dans la base de données.";
-
-                    // Charger le contenu du fichier HTML
                     $template_file = 'cv.html';
                     $html = file_get_contents($template_file);
-
-                    // Remplacer les variables du template avec les données correspondantes
                     $html = str_replace(
                         ['{{prenom}}', '{{nom}}', '{{telephone}}', '{{pays}}', '{{adresse}}', '{{email}}', '{{competence}}', '{{experience}}', '{{formation}}', '{{profession}}', '{{objectif}}', '{{langue1}}', '{{langue2}}', '{{date}}'],
                         [$prenom, $nom, $telephone, $pays, $adresse, $email, $competence, $experience, $formation, $objectif, $profession, $langue1, $langue2, date('d-m-Y')],
